@@ -1,0 +1,22 @@
+==meta
+name=funny_room
+floor=green
+type=floor
+==layout
+########################1########
+#                     L   L     #
+#   v                           #
+2                               #
+#              p                4
+#                               #
+#w                              #
+#w                              #
+#wwww                           #
+########3########################
+==rooms
+1,next_room_name,room_entrance_num,own_ent_direction
+2,next_room,room_entrance_x,room_entrance_y
+2,next_room,room_entrance_x,room_entrance_y
+4,next_room,room_entrance_x,room_entrance_y
+==platform
+1,speed,size,min,max

@@ -52,6 +52,8 @@ main_menue_item = 1
 selected_state_idx = 1
 
 
+movement ={x=0,y=0}
+
 ----------------------------------------------------------- 
 -- special data fields for debugging / testing only 
 ----------------------------------------------------------- 
@@ -132,7 +134,8 @@ function game.play(dt)
         
         
         
-        if action["move"] and game_state==GameStates.PLAYING then
+        if action["move"] and game_state == GameStates.PLAYING then
+          print("moving...")
             movement.x=movement.x+action["move"][1]
             movement.y=movement.y+action["move"][2]
         end

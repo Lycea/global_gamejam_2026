@@ -5,24 +5,28 @@
  
  
  key_mapper={
-   left = "left",
-   right = "right",
-   up="up",
-   down="down",
-   
-   escape="exit",
-   u ="use",
-   x = "attack",
-   ["return"] = "select",
-   
-   mt={
-     __index=function(table,key) 
-      return  "default"
-     end
-     
-     }
-   }
- 
+  a = "left",
+  d = "right",
+  w = "up",
+  s = "down",
+
+  left = "left",
+  right = "right",
+  up = "up",
+  down = "down",
+
+  escape = "exit",
+    f = "use",
+
+  ["return"] = "use",
+
+  mt = {
+    __index = function(table, key)
+      return "default"
+    end
+
+  }
+}
  setmetatable(key_mapper,key_mapper.mt)
  
 
