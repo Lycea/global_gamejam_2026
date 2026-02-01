@@ -24,8 +24,8 @@ end
 
 function platform:set_size(size)
   self.size = size
-  self.w = math.max((is_h * size), 1) * g.var.CELL_W
-  self.h = math.max((is_v * size), 1) * g.var.CELL_H
+  self.w = math.max((self.is_h * size), 1) * g.var.CELL_W
+  self.h = math.max((self.is_v * size), 1) * g.var.CELL_H
 end
 
 function platform:to_grid(x,y)
@@ -47,7 +47,7 @@ function platform:update()
   local p2_y = self.y + self.h
 
   local p2_grid = self:to_grid(p2_x,p2_y)
-  if g.var.room.hitboxes[p1_grid.y][p1_grid.x]:match("[^we]") then
+  if g.var.room.hitboxes[p2_grid.y][p2_grid.x]:match("[^we]") then
     self.speed_ = self.speed_ * -1
     return
   end

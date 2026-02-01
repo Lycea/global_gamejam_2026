@@ -21,9 +21,7 @@ type=floor
 #wwwwwwwwww   w#
 ############3###
 ==rooms
-1,next_room_name,room_entrance_num,own_ent_direction
-2,next_room,room_entrance_x,room_entrance_y
-2,next_room,room_entrance_x,room_entrance_y
-4,next_room,room_entrance_x,room_entrance_y
-==platform
-1,speed,size,min,max
+1,start,2,s
+2,start,3,w
+3,start,4,n
+4,start,1,e

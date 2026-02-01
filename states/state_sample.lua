@@ -11,7 +11,7 @@ end
 
 
 function sample_state:startup()
-  g.var.room = g.lib.room_handler("start")
+  g.var.room = g.lib.room_handler("start",true)
   g.var.player = g.obj.player(0,0,16,16)
 end
 

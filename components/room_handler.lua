@@ -9,7 +9,9 @@ function room_handler:new(name)
   self.objects = {}
 
   self.ports ={}
-  self.info = {}
+    self.info = {}
+
+  self.__parser_line_count = 1
 
   self:load_room(name,true)
 end
@@ -26,7 +28,7 @@ function room_handler:__csv(line)
  return val_list 
 end
 
-function room_handler:_room_layout(line)
+function room_handler:_room_layout(line,y)
   local floor_lu ={ floor = "f", empty ="e", water = "w" ,lava ="l"  }
 
     local row = {}
@@ -41,68 +43,77 @@ function room_handler:_room_layout(line)
           table.insert(row,"w")
         elseif tok == "#" then
             table.insert(row, "#")
+        elseif tok == "v" or tok == "h" then
+            table.insert(row, "e")
+            table.insert(self.platforms, g.obj.platform( tok, tok_cnt,self.__parser_line_count)  )
         elseif tok == "p" then
             self.player_pos ={ tok_cnt, #self.hitboxes +1  }
             --set player position info
             table.insert(row, default_floor)
         elseif tok:match("%d") then
-            table.insert(row, default_floor)
+            table.insert(row, tok)
+            self.ports[tok] = {
+                x = tok_cnt,
+                y = self.__parser_line_count
+            }
         else
           print("unknown tile found: ",tok)
             table.insert(row, default_floor)
         end
     end
 
-    table.insert( self.hitboxes ,row)
+    table.insert(self.hitboxes, row)
+    self.__parser_line_count = self.__parser_line_count +1
 end
 
 
-function room_handler:_room_meta(line)
+function room_handler:_room_meta(line,y)
   key, value = line:match("(.-)=(.*)")
   self.info[key] = value
 end
 
 
-function room_handler:_ports(line)
+function room_handler:_ports(line,y)
   local entrance_coord={
-    s={0,-1},n={0,1},e={1,0},w={-1,0}
+    s={0,1},n={0,-1},e={1,0},w={-1,0}
   }
   
   local raw_list = self:__csv(line)
-  local port_info = {
-        id = raw_list[1],
-        connected_room = raw_list[2],
-        connected_id = raw_list[3],
-        entrance = entrance_coord[raw_list[4]]
-    }
+  -- local port_info = {
+  --       id = raw_list[1],
+  --       connected_room = raw_list[2],
+  --       connected_id = raw_list[3],
+  --       entrance = entrance_coord[raw_list[4]]
+  --   }
+  local id = raw_list[1]
 
-  self.ports[port_info.id] = port_info
+  self.ports[id].id = id
+  self.ports[id].connected_room = raw_list[2]
+  self.ports[id].connected_id = raw_list[3]
+  self.ports[id].entrance = entrance_coord[ raw_list[4] ]
 end
 
-function room_handler:_platforms(line)
+function room_handler:_platforms(line,y)
     local raw_list = self:__csv(line)
-    local platform = {
-    id = raw_list[1]
-  }
+    local id = raw_list[1]
 
-  -- self.platforms[platform.id].speed = raw_list[2]
-  -- self.platforms[platform.id].size = raw_list[3]
-  -- self.platforms[platform.id].min = raw_list[4]
-  -- self.platforms[platform.id].max = raw_list[5]
+    self.platforms[id].speed = raw_list[2]
+    self.platforms[id]:set_size( raw_list[3] )
 end
 
 -----------------
 -- ROOM FUNCTIONS
 
 function room_handler:load_room(name,is_start)
-    parsers = {
+
+  parsers = {
       layout = self._room_layout,
       meta = self._room_meta,
       rooms = self._ports,
       platform = self._platforms
     }
-
   print("loading room...", name)
+
 
   local full_path = "assets/rooms/" .. name .. ".rm"
   info = love.filesystem.getInfo(full_path)
@@ -115,23 +126,91 @@ function room_handler:load_room(name,is_start)
     return false
   end
 
-  cur_mode = ""
-  for line in love.filesystem.lines("assets/rooms/"..name..".rm") do
-    parser_switch = string.match(line, "==(.*)")
-    if parser_switch ~= nil then
-      cur_mode = parser_switch
-      print("switching to: " .. cur_mode)
-    else
-      print(line)
-      parsers[cur_mode](self, line)
+  if is_start == true then 
+    cur_mode = ""
+    for line in love.filesystem.lines("assets/rooms/" .. name .. ".rm") do
+      parser_switch = string.match(line, "==(.*)")
+      if parser_switch ~= nil then
+        cur_mode = parser_switch
+        print("switching to: " .. cur_mode)
+      else
+        print(line)
+        parsers[cur_mode](self, line)
+      end
     end
+    if self.player_pos then
+      g.var.player.pos.x = self.player_pos.x
+      g.var.player.pos.y = self.player_pos.y
+    end
+  else
+    return g.lib.room_handler(name)
   end
 end
 
 
+function room_handler:switch(id)
 
+  print("---------------------------")
+  print("switching out rooms...")
+  local new_room = self:load_room(self.ports[id].connected_room)
+  local exit_port = new_room.ports[self.ports[id].connected_id]
+  print("exit_port:", exit_port.x, exit_port.y)
+  print("entrances:", exit_port.entrance[1],exit_port.entrance[2])
+  print("old player pos:", g.var.player.pos.x, g.var.player.pos.y)
+  
+  g.var.player.pos.x = (exit_port.x + exit_port.entrance[1] ) * g.var.CELL_W
+  g.var.player.pos.y = (exit_port.y + exit_port.entrance[2] ) * g.var.CELL_H
+
+  print("new player pos:", g.var.player.pos.x, g.var.player.pos.y)
+  self = new_room
+  print("switch done")
+  print("---------------------------")
+
+end
 
 function room_handler:update()
+  for i,platform in pairs(self.platforms) do
+    platform:update()
+  end
+
+  for i,button in pairs(self.buttons) do
+    button:update()
+  end
+end
+
+-- x /y coordinates
+function room_handler:is_wall(p)
+  return self.hitboxes[p.y][p.x] == "#"
+end
+
+function room_handler:check_death(p)
+    local g_val = self.hitboxes[p.y][p.x]
+    if g_val == "e" or g_val == "w" or g_val == "l" then
+        return true
+    end
+    return false
+end
+
+function room_handler:check_port(p)
+  if self.hitboxes[p.y][p.x]:match("%d") then
+    return true
+  end
+  return false
+end
+
+function room_handler:on_object(x, y, w, h)
+ -- TODO: do real collision test and connect player to plattform 
+  for i, platform in pairs(self.platforms) do
+        if platform:collides(x, y, w, h) then
+            return true
+        end
+    end
+
+    for i, object in pairs(self.objects) do
+
+    end
+
+    return false
 end
 
 local color_lu = {
@@ -143,11 +222,12 @@ local color_lu = {
 function room_handler:draw()
     for y, row in ipairs(self.hitboxes) do
         for x, cell in ipairs(row) do
-            g.lib.colors.fg_set(color_lu[cell])
+            g.lib.colors.fg_set(color_lu[cell] or color_lu["f"] )
 
             love.graphics.rectangle("fill", x * g.var.CELL_W, y * g.var.CELL_H, g.var.CELL_W, g.var.CELL_H)
             if g.var.debug.show_grid then
                 g.lib.colors.fg_set("black")
+                love.graphics.print(cell,x*g.var.CELL_W, y*g.var.CELL_H)
                 love.graphics.rectangle("line", x * g.var.CELL_W, y * g.var.CELL_H, g.var.CELL_W, g.var.CELL_H)
             end
         end
