@@ -53,6 +53,12 @@ end
 function main_menue()
   
   menue("Tomb of the mask",{"Start new","Exit"},0,0,400,400,main_menue_item,false)
+
+
+  gr.setColor(255, 255, 255)
+  gr.print("   HELP:\n   -----\n  enter  -> select\n  wasd/arrows -> move ingame /menue", 200, 60)
+
+  gr.setColor(0, 0, 0)
 end
 
 
