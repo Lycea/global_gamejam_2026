@@ -69,7 +69,7 @@ function update_menue()
             
             main_menue_item = main_menue_item+ action["menue_idx_change"][2] 
             if main_menue_item <1 then main_menue_item = 1 end
-            if main_menue_item>4 then main_menue_item = 4 end
+            if main_menue_item>2 then main_menue_item = 2 end
             print(main_menue_item)
           
             key_timer = love.timer.getTime()
