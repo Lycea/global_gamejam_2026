@@ -6,7 +6,7 @@ function button:new(timed, x, y)
     self.h = 16
 
     self.timed = timed
-    self.timer = g.lib.timer(5)
+    self.timer = g.lib.timer(7)
     
     self.is_active = false
     self.rect = {p1={},p2={}}
@@ -24,7 +24,7 @@ function button:update()
 
   if collides then
     self.is_active = true
-    self.timer = g.lib.timer(5)
+    self.timer = g.lib.timer(7)
   end
 
   if self.is_active and self.timed then

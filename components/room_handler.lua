@@ -57,6 +57,9 @@ function room_handler:_room_layout(line,y)
           table.insert(self.buttons,
                        g.obj.button(tok == "b", tok_cnt * g.var.CELL_W, self.__parser_line_count * g.var.CELL_H))
             table.insert(row,default_floor)
+        elseif tok == "d" then
+            table.insert(self.objects, g.obj.button_door(tok_cnt * g.var.CELL_W, self.__parser_line_count * g.var.CELL_H))
+          table.insert(row,"#")
         elseif tok:match("%d") then
             table.insert(row, tok)
             self.ports[tok] = {
@@ -181,8 +184,12 @@ function room_handler:update()
     platform:update()
   end
 
-  for i,button in pairs(self.buttons) do
-    button:update()
+    for i, button in pairs(self.buttons) do
+        button:update()
+    end
+
+  for i, obj in pairs(self.objects) do
+    obj:update()
   end
 end
 
@@ -246,7 +253,11 @@ function room_handler:draw()
     end
 
     for i, button in pairs(self.buttons) do
-      button:draw()
+        button:draw()
+    end
+
+    for i, obj in pairs(self.objects) do
+      obj:update()
     end
 end
 
