@@ -2,14 +2,14 @@
 name=some name
 type=floor
 ==layout
-########p#######
+########4#######
 #eeeeeeefeeeeee#
 #eeeeeeeeeeeeee#
 #eeeeeeeveeeeee#
 #eeeeeeeeeeeeee#
 #eeeeeeeeeeeeee#
 #eeeeeeeeeeeeee#
-pfeeeheefeeheefp
+3feeeheefeeheef2
 #eeeeeeeeeeeeee#
 #eeeeeeeeeeeeee#
 #eeeeeeeveeeeee#
@@ -17,4 +17,14 @@ pfeeeheefeeheefp
 #eeeeeeeeeeeeee#
 #eeeeeeeeeeeeee#
 #eeeeeeefeeeeee#
-########p#######
+########1#######
+==rooms
+1,platform,1,n
+2,timed_button,1,w
+3,buttons,1,e
+4,paradox,1,s
+==platform
+1,1,2
+2,3,2
+3,5,2
+4,5,2

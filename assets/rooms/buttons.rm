@@ -2,26 +2,22 @@
 name=some name
 type=floor
 ==layout
-########4#######
+#######2########
+#     #d#      #
 #              #
-#eeeeeheeeeeeee#
-#              #
-#              #
-#              #
+#  B        B  #
 #              #
 #              #
 #              #
+#              1
 #              #
 #              #
-#eeeeeee eeeeee#
-#eeveeee eeheee#
-#eeeeeee eeeeee#
-#eeeeeee eeeeee#
-########1#######
+#              #
+#              #
+#  B        B  #
+#              #
+#              #
+################
 ==rooms
-1,start,1,n
-4,void,1,s
-==platform
-1,1,2
-2,3,2
-3,5,2
+1,void,3,w
+2,void,3,w

@@ -1,0 +1,23 @@
+==meta
+name=some name
+type=floor
+==layout
+#######2########
+#eeeee#d#eeeeee#
+#eeeeee eeeeeee#
+#eeeeee      be#
+#eeeeeeeeeeee e#
+#eeeeeeeeeeee e#
+#eeeeeeeeeeee e#
+1  eb  e   be e#
+#e e e e ee e e#
+#e e e e ee e e#
+#e e e e ee e e#
+#eb  e  bee  be#
+#eeeeeeeeeeeeee#
+#eeeeeeeeeeeeee#
+#eeeeeeeeeeeeee#
+################
+==rooms
+1,void,2,e
+2,void,2,e
