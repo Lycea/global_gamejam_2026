@@ -9,7 +9,7 @@ function room_handler:new(name)
   self.objects = {}
 
   self.ports ={}
-    self.info = {}
+  self.info = {}
 
   self.__parser_line_count = 1
 
@@ -52,6 +52,11 @@ function room_handler:_room_layout(line,y)
             self.player_pos ={ tok_cnt, #self.hitboxes +1  }
             --set player position info
             table.insert(row, default_floor)
+        elseif tok == "b" or tok == "B" then --buttons
+          print("adding button:  ",tok)
+          table.insert(self.buttons,
+                       g.obj.button(tok == "b", tok_cnt * g.var.CELL_W, self.__parser_line_count * g.var.CELL_H))
+            table.insert(row,default_floor)
         elseif tok:match("%d") then
             table.insert(row, tok)
             self.ports[tok] = {
@@ -236,9 +241,13 @@ function room_handler:draw()
         end
     end
     g.lib.colors.reset()
-  for i, platform in pairs(self.platforms) do
-    platform:draw()
-  end
+    for i, platform in pairs(self.platforms) do
+        platform:draw()
+    end
+
+    for i, button in pairs(self.buttons) do
+      button:draw()
+    end
 end
 
 --NOTE: spacemacs evile replace mode : R

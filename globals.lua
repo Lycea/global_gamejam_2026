@@ -12,7 +12,8 @@ g.lib.room_handler = require("components.room_handler")
 g.obj = {}
 g.obj.platform = require("components.platforms")
 g.obj.player = require("components.player")
-
+g.obj.button = require("components.button")
+g.obj.button_door = require("components.button_door")
 
 g.lib.colors = require("helper.colors")
 local col = g.lib.colors
