@@ -40,6 +40,10 @@ function helper.distance(self ,other)
   return math.sqrt(math.pow(dx,2)+math.pow(dy,2))
 end
 
+function helper.rect_to_points(obj)
+    return {x=obj.x , y=obj.y}, {x=obj.x+obj.w,  y=obj.y+obj.h}
+end
+
 function helper.rect_collision(ax1, ay1, ax2, ay2, bx1, by1, bx2, by2)
   -- Check if there is no overlap
   if ax2 < bx1 or ax1 > bx2 or ay2 < by1 or ay1 > by2 then

@@ -10,6 +10,8 @@ function platform:new(type_, x, y )
   self.w = 1
   self.h = 1
 
+  self.rect ={p1={},p2={}}
+
   self.type = type_
 
   self.is_v = type_ == "v" and 1 or 0
@@ -41,6 +43,24 @@ function platform:update()
 
   -- print("platform pos:", self.x, self.y)
   -- print("platform grid:",p1_grid.x,p1_grid.y)
+
+
+  -- check player on platform
+  self.rect.p1 , self.rect.p2 = g.helpers.rect_to_points(self)
+  g.var.player:calc_rect()
+
+  local tmp_p = g.var.player
+  local collides=g.helpers.rect_collision_tables(self.rect.p1,self.rect.p2,tmp_p.rect.p1,tmp_p.rect.p2)
+
+  if collides then
+    print("colliding with player !(move player)")
+    local tmp_x = tmp_p.pos.x + self.move_x * self.speed_
+    local tmp_y = tmp_p.pos.y + self.move_y * self.speed_
+    
+    if tmp_p:check_wall_col({ x = tmp_x, y = tmp_y }) == false then
+          tmp_p:set_pos(tmp_x, tmp_y)
+    end
+  end
   
   if g.var.room.hitboxes[self.p1_grid.y][self.p1_grid.x]:match("[^we]") then
      self.speed_ = self.speed_* -1
@@ -74,8 +94,7 @@ function platform:draw()
 end
 
 function platform:collides(obj)
-
-
+  return g.helpers.rect_collision_tables(self.rect.p1, self.rect.p2, obj.rect.p1, obj.rect.p2)
 end
 
 return platform

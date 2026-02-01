@@ -18,10 +18,20 @@ function player:new(x, y,w,h)
   self.height = h
 
   self.on_object = false
-
-  self.last_dir ={ x=0,y=-1}
+  self.rect = { p1 = {}, p2 = {} }
+  self.last_dir = { x = 0, y = -1 }
 end
 
+function player:calc_rect()
+  self.rect.p1, self.rect.p2 = g.helpers.rect_to_points({ x = self.pos.x, y = self.pos.y, w = self.width,h= self.height })
+end
+
+function player:set_pos(x, y)
+  self.pos.x = x
+  self.pos.y = y
+
+  self:calc_rect()
+end
 
 function getTouchedTiles(x, y, w, h, tileSize)
   local tiles  = {}
@@ -47,32 +57,43 @@ function getTouchedTiles(x, y, w, h, tileSize)
   return tiles
 end
 
+function player:check_wall_col(point)
+  local tiles = getTouchedTiles(point.x, point.y, self.width, self.width, g.var.CELL_W)
+
+  
+    for _, tile in pairs(tiles) do
+        if g.var.room:is_wall(tile) then
+            return true
+        end
+    end
+  
+  return false
+end
+
 function player:update()
   local new_x = self.pos.x + movement.x
   local new_y = self.pos.y + movement.y
 
-  -- if g.var.map:check_collision({ x = new_x, y = new_y, width = self.width, height = self.height }) == false then
-  --   self.pos.x = new_x
-  --   self.pos.y = new_y
-  -- end
+
   local tiles = getTouchedTiles(new_x, new_y, self.width, self.width, g.var.CELL_W)
 
   local death_tiles = 0
   local wall_tiles = 0
   local port_tiles = 0
 
-    for _, tile in pairs(tiles) do
-        death_tiles = death_tiles + (g.var.room:check_death(tile) and 1 or 0)
-        port_tiles = port_tiles + (g.var.room:check_port(tile) and 1 or 0)
-        wall_tiles = wall_tiles + (g.var.room:is_wall(tile) and 1 or 0)
-    end
-  
+  for _, tile in pairs(tiles) do
+    death_tiles = death_tiles + (g.var.room:check_death(tile) and 1 or 0)
+    port_tiles = port_tiles + (g.var.room:check_port(tile) and 1 or 0)
+    wall_tiles = wall_tiles + (g.var.room:is_wall(tile) and 1 or 0)
+  end
 
   if death_tiles == #tiles and self.on_object == false then
-    if g.var.room:on_object(self.pos.x, self.pos.y, self.width, self.height) == false then
+    if g.var.room:on_object(self) == false then
       print("reset placement")
       self.pos.x = self.pos.x - movement.x * g.var.CELL_W
       self.pos.y = self.pos.y - movement.y * g.var.CELL_H
+
+
       return
     else
       -- TODO insert platform case !

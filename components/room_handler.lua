@@ -201,10 +201,10 @@ function room_handler:check_port(p)
   return false
 end
 
-function room_handler:on_object(x, y, w, h)
+function room_handler:on_object(obj)
  -- TODO: do real collision test and connect player to plattform 
   for i, platform in pairs(self.platforms) do
-        if platform:collides(x, y, w, h) then
+        if platform:collides(obj) then
             return true
         end
     end
