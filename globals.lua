@@ -21,7 +21,8 @@ col.add("black", { 0, 0, 0 })
 col.add("grey", { 50, 50, 50 })
 col.add("red", { 255, 0, 0 })
 col.add("blue", { 0, 0, 255 })
-col.add("yellow",{255,255,0})
+col.add("yellow", { 255, 255, 0 })
+col.add("green", { 0, 255, 0 })
 
 g.var = {}
 g.var.player = {} ---@type player
@@ -33,7 +34,7 @@ g.var.CELL_H = 24
 
 --
 g.var.debug ={}
-g.var.debug.show_grid = true
+g.var.debug.show_grid = false
 return g
 
 

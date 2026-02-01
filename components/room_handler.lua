@@ -39,13 +39,15 @@ function room_handler:_room_layout(line,y)
       tok_cnt = tok_cnt +1
         if tok == " " then
             table.insert(row, default_floor)
-        elseif tok == "w" then
-          table.insert(row,"w")
+        elseif tok == "w" or tok == "e"  then
+          table.insert(row,tok)
         elseif tok == "#" then
             table.insert(row, "#")
         elseif tok == "v" or tok == "h" then
             table.insert(row, "e")
-            table.insert(self.platforms, g.obj.platform( tok, tok_cnt,self.__parser_line_count)  )
+            table.insert(self.platforms,
+                g.obj.platform(tok, tok_cnt * g.var.CELL_W
+                                         ,self.__parser_line_count * g.var.CELL_H)  )
         elseif tok == "p" then
             self.player_pos ={ tok_cnt, #self.hitboxes +1  }
             --set player position info
@@ -95,7 +97,7 @@ end
 
 function room_handler:_platforms(line,y)
     local raw_list = self:__csv(line)
-    local id = raw_list[1]
+    local id = tonumber( raw_list[1] )
 
     self.platforms[id].speed = raw_list[2]
     self.platforms[id]:set_size( raw_list[3] )
@@ -166,6 +168,7 @@ function room_handler:switch(id)
   print("switch done")
   print("---------------------------")
 
+  return new_room
 end
 
 function room_handler:update()
@@ -232,7 +235,10 @@ function room_handler:draw()
             end
         end
     end
-  g.lib.colors.reset()
+    g.lib.colors.reset()
+  for i, platform in pairs(self.platforms) do
+    platform:draw()
+  end
 end
 
 --NOTE: spacemacs evile replace mode : R

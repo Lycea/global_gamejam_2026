@@ -135,7 +135,6 @@ function game.play(dt)
         
         
         if action["move"] and game_state == GameStates.PLAYING then
-          print("moving...")
             movement.x=movement.x+action["move"][1]
             movement.y=movement.y+action["move"][2]
         end

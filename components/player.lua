@@ -67,7 +67,6 @@ function player:update()
         wall_tiles = wall_tiles + (g.var.room:is_wall(tile) and 1 or 0)
     end
   
-  print("port_tiles:",port_tiles,#tiles)
 
   if death_tiles == #tiles and self.on_object == false then
     if g.var.room:on_object(self.pos.x, self.pos.y, self.width, self.height) == false then
@@ -92,7 +91,7 @@ function player:update()
       end
 
       print("switch rooms ~")
-        g.var.room:switch(port_id)
+       g.var.room = g.var.room:switch(port_id)
       return
   end
 

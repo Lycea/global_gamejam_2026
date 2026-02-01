@@ -1,12 +1,8 @@
 ==meta
-name=funny_room
-floor=green
+name=some name
 type=floor
 ==layout
-############1###
-#eeeeeeeeee    #
-#eeeeeeeeee    #
-#eeeeeeeeee    #
+#######12#######
 #              #
 #              #
 #              #
@@ -14,14 +10,14 @@ type=floor
 #              #
 #              #
 #              #
-4              2
 #              #
-#wwwwwwwwww   w#
-#wwwwwwwwww   w#
-#wwwwwwwwww   w#
-############3###
+#              #
+#              #
+#              #
+#              #
+#              #
+#              #
+################
 ==rooms
-1,start,2,s
-2,start,3,w
-3,start,4,n
-4,start,1,e
+1,platform,1,s
+2,platform,1,s

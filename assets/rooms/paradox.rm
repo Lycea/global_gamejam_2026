@@ -1,0 +1,27 @@
+==meta
+name=funny_room
+floor=green
+type=floor
+==layout
+############1###
+#eeeeeeeeee    #
+#eeeeeeeeee    #
+#eeeeeeeeee    #
+#              #
+#              #
+#              #
+#              #
+#              #
+#              #
+#              #
+4              2
+#              #
+#wwwwwwwwww   w#
+#wwwwwwwwww   w#
+#wwwwwwwwww   w#
+############3###
+==rooms
+1,paradox,2,s
+2,paradox,3,w
+3,paradox,4,n
+4,paradox,1,e

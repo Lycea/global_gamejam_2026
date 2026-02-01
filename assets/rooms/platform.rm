@@ -1,0 +1,29 @@
+==meta
+name=some name
+type=floor
+==layout
+########4#######
+#              #
+#eeeeeheeeeeeee#
+#              #
+#              #
+#              #
+#              #
+3              2
+#              #
+#              #
+#              #
+#eeeeeee eeeeee#
+#eeveeee eeheee#
+#eeeeeee eeeeee#
+#eeeeeee eeeeee#
+########1#######
+==rooms
+1,start,1,n
+2,paradox,1,w
+3,paradox,1,e
+4,paradox,1,s
+==platform
+1,1,2
+2,3,2
+3,5,2
