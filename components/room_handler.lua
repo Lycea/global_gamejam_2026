@@ -107,7 +107,7 @@ function room_handler:_platforms(line,y)
     local raw_list = self:__csv(line)
     local id = tonumber( raw_list[1] )
 
-    self.platforms[id].speed = raw_list[2]
+    self.platforms[id].speed_ = raw_list[2]*60
     self.platforms[id]:set_size( raw_list[3] )
 end
 
@@ -179,17 +179,17 @@ function room_handler:switch(id)
   return new_room
 end
 
-function room_handler:update()
+function room_handler:update(dt)
   for i,platform in pairs(self.platforms) do
-    platform:update()
+    platform:update(dt)
   end
 
     for i, button in pairs(self.buttons) do
-        button:update()
+        button:update(dt)
     end
 
   for i, obj in pairs(self.objects) do
-    obj:update()
+    obj:update(dt)
   end
 end
 

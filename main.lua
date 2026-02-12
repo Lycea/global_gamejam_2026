@@ -113,6 +113,17 @@ function love.joystickaxis(j,a,v)
 end
 
 
+function love.mousefocus(f)
+  print("mouse focus:", f)
+  game.set_pause(f)
+end
+
+function love.visible(v)
+  print("visible:", v)
+  game.set_pause(v)
+end
+
+
 function love.resize(w,h)
         scr_h=h
         scr_w=w

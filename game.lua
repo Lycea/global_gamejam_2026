@@ -120,7 +120,6 @@ end
  
 
 function game.play(dt) 
-
     
 
   for key,v in pairs(key_list)do
@@ -156,7 +155,7 @@ function game.play(dt)
       
   end
  
-  sample_state:update()
+  sample_state:update(dt)
   
   
   -- Enemy behaviour basic / Enemy turn
@@ -167,10 +166,16 @@ end
  
 --main loop
 function game.update(dt) 
-  
   --handle game stuff
   if show_main_menue == false then
-    game.play(dt)
+    if g.updateing == true then
+      if dt > 0.01 then
+        dt = 0.005
+        print("dt spike, scaling it down")
+      end
+
+      game.play(dt)
+    end
     return
   end
   
@@ -209,6 +214,10 @@ end
  
  
 
+
+function game.set_pause(state)
+  g.updateing = state
+end
 
 function game.MouseHandle(x,y,btn) 
    

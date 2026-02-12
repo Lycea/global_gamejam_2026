@@ -32,6 +32,7 @@ g.var.room ={} ---@type Room
 g.var.CELL_W = 24
 g.var.CELL_H = 24
 
+g.updateing = true
 
 --
 g.var.debug ={}

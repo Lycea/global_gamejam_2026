@@ -70,9 +70,10 @@ function player:check_wall_col(point)
   return false
 end
 
-function player:update()
-  local new_x = self.pos.x + movement.x
-  local new_y = self.pos.y + movement.y
+local pl_speed = 120
+function player:update(dt)
+  local new_x = self.pos.x + movement.x * pl_speed *dt
+  local new_y = self.pos.y + movement.y * pl_speed *dt
 
 
   local tiles = getTouchedTiles(new_x, new_y, self.width, self.width, g.var.CELL_W)

@@ -27,9 +27,9 @@ end
 
 
 
-function sample_state:update()
-    g.var.room:update()
-    g.var.player:update()
+function sample_state:update(dt)
+    g.var.room:update(dt)
+    g.var.player:update(dt)
 end
 
 function sample_state:shutdown()

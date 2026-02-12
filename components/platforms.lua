@@ -19,10 +19,10 @@ function platform:new(type_, x, y )
 
   self.move_x = type_ == "h" and 1 or 0
   self.move_y = type_ == "v" and 1 or 0
-    self.size = 1
-    self.speed_ = 1
+  self.size = 1
+  self.speed_ = 1
 
-    self.player_on = false
+  self.player_on = false
 end
 
 function platform:set_size(size)
@@ -35,9 +35,11 @@ function platform:to_grid(x,y)
   return {x= math.floor(x/g.var.CELL_W),y=math.floor(y/g.var.CELL_H) }
 end
 
-function platform:update()
-  self.x = self.x + self.move_x * self.speed_
-  self.y = self.y + self.move_y * self.speed_
+function platform:update(dt)
+  self.x = self.x + self.move_x * self.speed_ *dt
+  self.y = self.y + self.move_y * self.speed_ *dt
+
+  
 
   self.p1_grid = self:to_grid(self.x,self.y)
 
@@ -52,18 +54,22 @@ function platform:update()
   local tmp_p = g.var.player
   local collides=g.helpers.rect_collision_tables(self.rect.p1,self.rect.p2,tmp_p.rect.p1,tmp_p.rect.p2)
 
+  -- player collision with wall
   if collides then
-    print("colliding with player !(move player)")
-    local tmp_x = tmp_p.pos.x + self.move_x * self.speed_
-    local tmp_y = tmp_p.pos.y + self.move_y * self.speed_
+    --print("colliding with player !(move player)")
+    local tmp_x = tmp_p.pos.x + self.move_x * self.speed_ *dt
+    local tmp_y = tmp_p.pos.y + self.move_y * self.speed_ *dt
     
     if tmp_p:check_wall_col({ x = tmp_x, y = tmp_y }) == false then
           tmp_p:set_pos(tmp_x, tmp_y)
     end
   end
-  
+
+  -- plattform with wall
   if g.var.room.hitboxes[self.p1_grid.y][self.p1_grid.x]:match("[^we]") then
      self.speed_ = self.speed_* -1
+     self.x = self.x + self.move_x * self.speed_ * dt
+     self.y = self.y + self.move_y * self.speed_ * dt
      return
   end
 
@@ -73,6 +79,9 @@ function platform:update()
   self.p2_grid = self:to_grid(p2_x,p2_y)
   if g.var.room.hitboxes[self.p2_grid.y][self.p2_grid.x]:match("[^we]") then
     self.speed_ = self.speed_ * -1
+    self.x = self.x + self.move_x * self.speed_ * dt
+    self.y = self.y + self.move_y * self.speed_ * dt
+
     return
   end
 
