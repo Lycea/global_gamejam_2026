@@ -169,8 +169,9 @@ function game.update(dt)
   --handle game stuff
   if show_main_menue == false then
     if g.updateing == true then
-      if dt > 0.01 then
-        dt = 0.005
+      if dt > 0.02 then
+        dt = love.timer.getAverageDelta( )
+
         print("dt spike, scaling it down")
       end
 
@@ -195,6 +196,7 @@ function game.draw()
     end
     
     sample_state:draw()
+    love.graphics.print("       Dt:"..love.timer.getDelta().."\nAVG Dt:"..love.timer.getAverageDelta(), 410)
 end 
  
  
